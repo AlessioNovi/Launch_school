@@ -9,20 +9,29 @@ def prompt(message)
 end
 
 def valid_number?(num)
-  num.to_i() != 0
+  num.to_i().to_s() == num
+end
+
+def valid_float?(num)
+  num.to_f().to_s == num
+end
+
+def number?(num)
+  valid_number?(num) || valid_float?(num)
 end
 
 def operation_to_message(op)
-  case op
-  when '1'
-    'Adding'
-  when '2'
-    'Subtracting'
-  when '3'
-    'Multiplying'
-  when '4'
-    'Dividing'
-  end
+  outcome = case op
+            when '1'
+              'Adding'
+            when '2'
+              'Subtracting'
+            when '3'
+              'Multiplying'
+            when '4'
+              'Dividing'
+            end
+  outcome
 end
 
 prompt("Welcome to Calculator! Enter your name:")
@@ -44,7 +53,7 @@ loop do # main loop
   loop do
     prompt("What'the first number")
     number1 = Kernel.gets().chomp()
-    if valid_number?(number1)
+    if number?(number1)
       break
     else
       prompt("Hmm... that doesn't look a valid number")
@@ -54,7 +63,7 @@ loop do # main loop
   loop do
     prompt("What'the second number")
     number2 = Kernel.gets().chomp()
-    if valid_number?(number2)
+    if number?(number2)
       break
     else
       prompt("Hmm... that doesn't look a valid number")
@@ -71,7 +80,9 @@ loop do # main loop
   operator = ''
   loop do
     operator = Kernel.gets().chomp()
-    if %w(1 2 3 4).include?(operator)
+    if %w(1 2 3 4).include?(operator) && operator == '4' && number2 == '0'
+      prompt("You can't divide by zero, choose only 1) 2) or 3) in this case")
+    elsif %w(1 2 3 4).include?(operator)
       break
     else
       prompt("Must choose 1 2 3 or 4")
@@ -80,11 +91,11 @@ loop do # main loop
   prompt("#{operation_to_message(operator)} the two numbers")
   result = case operator
            when '1'
-             number1.to_i() + number2.to_i()
+             number1.to_f() + number2.to_f()
            when '2'
-             number1.to_i() - number2.to_i()
+             number1.to_f() - number2.to_f()
            when '3'
-             number1.to_i() * number2.to_i()
+             number1.to_f() * number2.to_f()
            when '4'
              number1.to_f() / number2.to_f()
            end
