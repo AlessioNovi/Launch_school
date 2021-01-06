@@ -1,26 +1,56 @@
 --- 
-
-welcome: "Welcome to Calculator! Enter your name:"
-valid_name: "Make sure to use a valid name"
-hello_name: "Hello"
-first_number: "What'the first number"
-second_number: "What'the second number"
-not_a_valid_number: "Hmm... that doesn't look a valid number"
-operator_prompt: |
-   What operation would you like to perform 
-   1) add 
-   2) subtract 
-   3) multiply 
-   4) divide
-adding: 'Adding'
-subtracting: 'Subtracting'
-multiplying: 'Multiplying'
-dividing: 'Dividing'
-no_zero_division: "You can't divide by zero, choose only 1) 2) or 3) in this case"
-must_choose_1_2_3_or_4: "Must choose 1 2 3 or 4"
-the_two_numbers: "the two numbers"
-the_result_is: "The Result is"
-another_calculation?: "Do you want to perform another calculation? type y/yes/n/no"
-wrong_input: "Wrong input: only accepted y/yes/n/no"
-restart_calculator: "Restarting calculator"
-thank_you: "Thank you for using the calculator. Good Bye!"
+en:
+  welcome: "Welcome to Calculator! Please choose your language: type en for english / it for italian"
+  valid_language: "Valid inputs are: en/it"
+  ask_name: "What's your name?"
+  valid_name: "Make sure to use a valid name"
+  hello_name: "Hello"
+  first_number: "What'the first number"
+  second_number: "What'the second number"
+  not_a_valid_number: "Hmm... that doesn't look a valid number"
+  operator_prompt: |
+     What operation would you like to perform 
+     1) add 
+     2) subtract 
+     3) multiply 
+     4) divide
+  adding: 'Adding'
+  subtracting: 'Subtracting'
+  multiplying: 'Multiplying'
+  dividing: 'Dividing'
+  no_zero_division: "You can't divide by zero, choose only 1) 2) or 3) in this case"
+  must_choose_1_2_3_or_4: "Must choose 1 2 3 or 4"
+  the_two_numbers: "the two numbers"
+  the_result_is: "The Result is"
+  another_calculation?: "Do you want to perform another calculation? type y/yes/n/no"
+  wrong_input: "Wrong input: only accepted y/yes/n/no"
+  restart_calculator: "Restarting calculator"
+  thank_you: "Thank you for using the calculator. Good Bye!"
+  
+it:
+  welcome: "Benvenuto! prego inserisci la lingua: digita en per inglese / it per italiano"
+  valid_language: "Input accettati: en/it"
+  ask_name: "Come ti chiami?"
+  valid_name: "Per piacere usa un nome corretto"
+  hello_name: "Ciao"
+  first_number: "Digita il primo numero"
+  second_number: "Digita il secondo numero"
+  not_a_valid_number: "Hmm... non mi sembra un numero corretto"
+  operator_prompt: |
+     Che operazione vuoi fare? 
+     1) addizione
+     2) sottrazione 
+     3) moltiplicazione 
+     4) divisione
+  adding: 'Aggiungo'
+  subtracting: 'Sottraggo'
+  multiplying: 'Moltiplico'
+  dividing: 'Divido'
+  no_zero_division: "Non puoi dividere per 0, scegli l'opzione 1) 2) o 3)"
+  must_choose_1_2_3_or_4: "Deve scegliere tra 1 2 3 or 4"
+  the_two_numbers: "i due numeri"
+  the_result_is: "Il risultato è"
+  another_calculation?: "Vuoi fare un'altra operazione? digita y/yes/n/no"
+  wrong_input: "Input errato, valori ammessi: y/yes/n/no"
+  restart_calculator: "Riavvio la calcolatrice"
+  thank_you: "Grazie per usato la calcolatrice, Arrivederci!"
