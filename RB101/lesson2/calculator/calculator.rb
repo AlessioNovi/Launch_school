@@ -63,8 +63,9 @@ def operator_input_check(op)
   %w(1 2 3 4).include?(op)
 end
 
-def play_again?(answ)
-  answ == 'n' || answ == 'no'
+def play_again?(language)
+  answer = check_valid_answer(language)
+  answer == 'y' || answer == 'yes'
 end
 
 def valid_answer?(answ)
@@ -83,12 +84,10 @@ end
 def get_name(language)
   name = ''
   loop do
+    prompt(messages(language, 'ask_name'))
     name = Kernel.gets().chomp().strip
-    if name.empty?
-      prompt(messages(language, 'valid_name'))
-    else
-      break
-    end
+    break unless name.empty?
+    prompt(messages(language, 'valid_name'))
   end
   name
 end
@@ -98,11 +97,8 @@ def get_number_1(language)
   loop do
     prompt(messages(language, 'first_number'))
     number1 = Kernel.gets().chomp()
-    if number?(number1)
-      break
-    else
-      prompt(messages(language, 'not_a_valid_number'))
-    end
+    break if number?(number1)
+    prompt(messages(language, 'not_a_valid_number'))
   end
   number1
 end
@@ -112,17 +108,15 @@ def get_number_2(language)
   loop do
     prompt(messages(language, 'second_number'))
     number2 = Kernel.gets().chomp()
-    if number?(number2)
-      break
-    else
-      prompt(messages(language, 'not_a_valid_number'))
-    end
+    break if number?(number2)
+    prompt(messages(language, 'not_a_valid_number'))
   end
   number2
 end
 
-def get_operator_and_check_zero_division(language, number2)
+def get_operator(language, number2)
   operator = ''
+  prompt(messages(language, 'operator_prompt'))
   loop do
     operator = Kernel.gets().chomp()
     if no_zero_div(operator, number2)
@@ -140,11 +134,8 @@ def check_valid_answer(language)
   answer = ''
   loop do
     answer = Kernel.gets().chomp().downcase
-    if valid_answer?(answer)
-      break
-    else
-      prompt(messages(language, 'wrong_input'))
-    end
+    break if valid_answer?(answer)
+    prompt(messages(language, 'wrong_input'))
   end
   answer
 end
@@ -166,34 +157,54 @@ def set_language(language)
   language_choice
 end
 
-clear # clears screen initially
+def display_welcome(language)
+  clear
+  prompt(messages(language, 'welcome'))
+end
 
-prompt(messages(language, 'welcome'))
+def display_named_welcome(language, name)
+  prompt(messages(language, 'hello_name') + ' ' + name)
+end
+
+def display_both_numbers(operator, language)
+  prompt(operation_to_message(operator, language) + ' ' +
+  messages(language, 'the_two_numbers'))
+end
+
+def display_result(language, result)
+  prompt(messages(language, 'the_result_is') + ' ' + result.to_s)
+end
+
+def restart_calculator(language)
+  prompt(messages(language, 'restart_calculator'))
+  restart
+end
+
+def display_goodbye(language)
+  prompt(messages(language, 'thank_you'))
+end
+
+def display_another_calculation?(language)
+  prompt(messages(language, 'another_calculation?'))
+end
+
+display_welcome(language)
 
 language = set_language(language) # asks for language
 
-prompt(messages(language, 'ask_name'))
-
 name = get_name(language) # asks for name
 
-prompt(messages(language, 'hello_name') + ' ' + name)
+display_named_welcome(language, name)
 
 loop do # main program loop
   number1 = get_number_1(language)
   number2 = get_number_2(language)
-  prompt(messages(language, 'operator_prompt'))
-  operator = get_operator_and_check_zero_division(language, number2)
-  prompt(operation_to_message(operator, language) + ' ' +
-  messages(language, 'the_two_numbers'))
+  operator = get_operator(language, number2)
+  display_both_numbers(operator, language)
   result = operator_case(operator, number1, number2)
-  prompt(messages(language, 'the_result_is') + ' ' + result.to_s)
-  prompt(messages(language, 'another_calculation?'))
-  answer = check_valid_answer(language)
-  if play_again?(answer) # will exit loop if type n/no
-    break
-  else
-    prompt(messages(language, 'restart_calculator'))
-    restart
-  end
+  display_result(language, result)
+  display_another_calculation?(language)
+  break unless play_again?(language)
+  restart_calculator(language)
 end
-prompt(messages(language, 'thank_you'))
+display_goodbye(language)

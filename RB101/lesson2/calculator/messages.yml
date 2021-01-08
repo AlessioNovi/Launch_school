@@ -5,8 +5,8 @@ en:
   ask_name: "What's your name?"
   valid_name: "Make sure to use a valid name"
   hello_name: "Hello"
-  first_number: "What'the first number"
-  second_number: "What'the second number"
+  first_number: "What's the first number"
+  second_number: "What's the second number"
   not_a_valid_number: "Hmm... that doesn't look a valid number"
   operator_prompt: |
      What operation would you like to perform 
