@@ -1,0 +1,7 @@
+---
+welcome: "Welcome to Loan Calculator"
+ask_loan: "Please enter your loan amount"
+wrong_input: "Input is incorret, value must be a positive number only"
+ask_apr: "Please input the Annual Percentage Rate eg. 3%, 3.5%"
+wrong_apr_input: "Input is incorret, please format your input as 3% / 3.5% "
+not_positive_apr: "Must enter positive value"
