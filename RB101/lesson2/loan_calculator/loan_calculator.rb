@@ -25,7 +25,12 @@ MESSAGES = YAML.load_file('messages.yml')
 
 def prompt(message)
   message = MESSAGES[message]
-  puts "=> #{message}"
+  puts  "=> #{message}"
+end
+
+def prompt_no_newline(message)
+  message = MESSAGES[message]
+  print  "=> #{message}"
 end
 
 def clear
@@ -55,6 +60,10 @@ def get_loan_amount
   loan_amount.to_f
 end
 
+def display_loan_amount(loan_amount)
+  puts "#{prompt_no_newline('display_loan_amount')} #{loan_amount}$"
+end
+
 def apr_valid_input?(apr)
   number?(apr) && apr.to_f > 0
 end
@@ -67,7 +76,7 @@ def get_monthly_apr(apr)
   (apr.to_f / 100 / 12).truncate(4)
 end
 
-def get_apr
+def get_and_convert_apr
   apr = ''
   loop do
     prompt('ask_apr')
@@ -83,13 +92,19 @@ def get_apr
   get_monthly_apr(apr)
 end
 
+def display_monthly_apr(apr)
+  puts "#{prompt_no_newline('display_monthly_apr')} #{(apr * 100).round(3)}%"
+end
+
 clear
 
 prompt('welcome')
 
 loop do
   loan_amount = get_loan_amount
-  apr = get_apr
+  display_loan_amount(loan_amount)
+  apr = get_and_convert_apr
+  display_monthly_apr(apr)
 end
 
 
