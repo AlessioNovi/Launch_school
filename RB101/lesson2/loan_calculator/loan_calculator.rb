@@ -38,7 +38,7 @@ def clear
 end
 
 def valid_int?(num)
-  num.to_i.to_s == num
+   num.to_i.to_s == num
 end
 
 def valid_float(num)
@@ -49,12 +49,16 @@ def number?(num)
   valid_int?(num) || valid_float(num)
 end
 
+def valid_loan?(loan_amount)
+  number?(loan_amount) && loan_amount.to_f > 0
+end
+
 def get_loan_amount
   loan_amount = ''
   loop do
     prompt('ask_loan')
     loan_amount = gets.chomp.strip
-    break if number?(loan_amount) && loan_amount.to_f > 0
+    break if valid_loan?(loan_amount)
     prompt('wrong_input')
   end
   loan_amount.to_f
@@ -76,15 +80,16 @@ def get_monthly_apr(apr)
   (apr.to_f / 100 / 12).truncate(4)
 end
 
+
 def get_and_convert_apr
   apr = ''
   loop do
     prompt('ask_apr')
-    apr = gets.chomp.strip.delete "%"
+    apr = gets.chomp.strip.chomp("%") # To verify only one "%" is input if given
     if apr_valid_input?(apr)
       break
     elsif apr_not_positive?(apr)
-      prompt('not_positive_apr')
+      prompt('not_positive')
     else
       prompt('wrong_apr_input')
     end
@@ -96,6 +101,42 @@ def display_monthly_apr(apr)
   puts "#{prompt_no_newline('display_monthly_apr')} #{(apr * 100).round(3)}%"
 end
 
+def valid_value?(value)
+  valid_int?(value) && value.to_i >= 0
+end
+
+def value_not_positive?(value)
+  valid_int?(value) && value.to_i < 0
+end
+
+def a(value)
+puts   %w(129).include?(value)
+end
+
+def check_zero_value
+puts  value = gets.chomp.strip.chars
+  
+end
+
+def get_value
+  loop do
+    prompt('ask_years')
+puts    value = check_zero_value
+    if valid_value?(value)
+      break
+    elsif value_not_positive?(value)
+      prompt('not_positive')
+    else
+      prompt('wrong_value_input')
+    end
+  end
+end
+
+
+def get_loan_duration
+  years = get_value
+end
+
 clear
 
 prompt('welcome')
@@ -105,6 +146,7 @@ loop do
   display_loan_amount(loan_amount)
   apr = get_and_convert_apr
   display_monthly_apr(apr)
+  loan_duration = get_loan_duration
 end
 
 

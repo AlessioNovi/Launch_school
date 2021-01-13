@@ -1,9 +1,11 @@
 ---
 welcome: "Welcome to Loan Calculator"
 ask_loan: "Please enter your loan amount"
-wrong_input: "Input is incorret, value must be a positive number only"
+wrong_input: "Input is incorret, value accepted is number greater than zero"
 ask_apr: "Please input the Annual Percentage Rate eg. 3%, 3.5%"
 wrong_apr_input: "Input is incorret, please format your input as 3% / 3.5% "
-not_positive_apr: "Must enter positive value"
+not_positive: "Must enter positive value"
 display_loan_amount: "You selected as loan amount:"
 display_monthly_apr: "Your APR converted in monthly interest is:"
+wrong_value_input: "Input is incorret, only positive Integers accepted"
+ask_years: "Please input the duration in years, can input zero if loan duration is less than a year"
