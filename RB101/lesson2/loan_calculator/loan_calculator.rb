@@ -69,11 +69,11 @@ def display_loan_amount(loan_amount)
 end
 
 def apr_valid_input?(apr)
-  number?(apr) && apr.to_f > 0
+  number?(apr) && apr.to_f > 0.1
 end
 
 def apr_not_positive?(apr)
-  number?(apr) && apr.to_f <= 0
+  number?(apr) && apr.to_f <= 0.1
 end
 
 def get_monthly_apr(apr)
@@ -109,19 +109,20 @@ def value_not_positive?(value)
   valid_int?(value) && value.to_i < 0
 end
 
-def a(value)
-puts   %w(129).include?(value)
-end
-
 def check_zero_value
-puts  value = gets.chomp.strip.chars
-  
+  value = gets.chomp.strip
+  if value.squeeze == '0'
+    value.squeeze # validates many zeroes as one eg. "000000" as "0"
+  else
+    value
+  end
 end
 
 def get_value
+  value = ''
   loop do
     prompt('ask_years')
-puts    value = check_zero_value
+    value = check_zero_value 
     if valid_value?(value)
       break
     elsif value_not_positive?(value)
@@ -130,6 +131,7 @@ puts    value = check_zero_value
       prompt('wrong_value_input')
     end
   end
+  value
 end
 
 
