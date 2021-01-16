@@ -1,31 +1,10 @@
-# to calculate MONTHLY PAYMENT is needed
-#the loan amount
-#the Annual Percentage Rate (APR) -> need to find monthly interest rate 
-#the loan duration -> need to find loan duration in months
-
-#formula for monlthy payment is m = p * (j / (1 - (1 + j)**(-n)))
-
-#m = monthly payment
-#p = loan amount
-#j = monthly interest rate
-#n = loan duration in months
-
-#pseudo code
-
-#promtp hello
-#ask for loan amount - (must be no void and > 0)
-#ask for APR - APR/100/12 to convert in monthly interest rate (must be no void and > 0)
-#ask for loan duration - must convert all in months (can ask once all in months or once in year*12 and months and then sum)  (must be no void and > 0)
-#perform formula and show monthly payment
-#ask for other calculation or exit
-
 require 'yaml'
 
 MESSAGES = YAML.load_file('messages.yml')
 
 def prompt(message)
   message = MESSAGES[message]
-  puts  "=> #{message}"
+  puts "=> #{message}"
 end
 
 def prompt_no_newline(message)
@@ -38,15 +17,15 @@ def clear
 end
 
 def valid_int?(num)
-   num.to_i.to_s == num
+  num.to_i.to_s == num
 end
 
-def valid_float(num)
+def valid_float?(num)
   num.to_f.to_s == num
 end
 
 def number?(num)
-  valid_int?(num) || valid_float(num)
+  valid_int?(num) || valid_float?(num)
 end
 
 def valid_loan?(loan_amount)
@@ -69,36 +48,35 @@ def display_loan_amount(loan_amount)
 end
 
 def apr_valid_input?(apr)
-  number?(apr) && apr.to_f > 0.1
+  number?(apr) && apr.to_f > 0
 end
 
-def apr_not_positive?(apr)
-  number?(apr) && apr.to_f <= 0.1
+def apr_too_small?(apr)
+  number?(apr) && apr.to_f <= 0
 end
 
 def get_monthly_apr(apr)
-  (apr.to_f / 100 / 12).truncate(4)
+  (apr.to_f / 100 / 12)
 end
 
-
-def get_and_convert_apr
+def get_apr
   apr = ''
   loop do
     prompt('ask_apr')
-    apr = gets.chomp.strip.chomp("%") # To verify only one "%" is input if given
+    apr = gets.chomp.strip.sub(/\%+$/, '')
     if apr_valid_input?(apr)
       break
-    elsif apr_not_positive?(apr)
+    elsif apr_too_small?(apr)
       prompt('not_positive')
     else
       prompt('wrong_apr_input')
     end
   end
-  get_monthly_apr(apr)
+  apr.to_f
 end
 
-def display_monthly_apr(apr)
-  puts "#{prompt_no_newline('display_monthly_apr')} #{(apr * 100).round(3)}%"
+def display_apr(apr)
+  puts "#{prompt_no_newline('display_apr')} #{(apr)}%"
 end
 
 def valid_value?(value)
@@ -109,20 +87,11 @@ def value_not_positive?(value)
   valid_int?(value) && value.to_i < 0
 end
 
-def check_zero_value
-  value = gets.chomp.strip
-  if value.squeeze == '0'
-    value.squeeze # validates many zeroes as one eg. "000000" as "0"
-  else
-    value
-  end
-end
-
 def get_value
   value = ''
   loop do
-    prompt('ask_years')
-    value = check_zero_value 
+    prompt('ask_value')
+    value = gets.chomp.strip.sub(/^0+$/, '0')
     if valid_value?(value)
       break
     elsif value_not_positive?(value)
@@ -131,12 +100,62 @@ def get_value
       prompt('wrong_value_input')
     end
   end
-  value
+  value.to_i
 end
 
+def display_years(years)
+  puts "#{prompt_no_newline('display_years')} #{years}"
+end
+
+def display_months(months)
+  puts "#{prompt_no_newline('display_months')} #{months}"
+end
 
 def get_loan_duration
-  years = get_value
+  years = ''
+  months = ''
+  total_months = ''
+  loop do
+    prompt('ask_years')
+    years = get_value
+    display_years(years)
+    prompt('ask_months')
+    months = get_value
+    display_months(months)
+    total_months = (years * 12) + months
+    break unless total_months <= 0
+    prompt('zero_duration')
+  end
+  total_months
+end
+
+def get_payment(loan_amount, apr, loan_duration)
+  loan_amount * (get_monthly_apr(apr) / (1 -
+  (1 + get_monthly_apr(apr))**(-loan_duration))).round(4)
+end
+
+def display_payment(monthly_payment)
+  puts "#{prompt_no_newline('payment')} #{monthly_payment}$"
+end
+
+def valid_answer?(answ)
+  %w(y yes n no).include?(answ)
+end
+
+def check_valid_answer
+  answer = ''
+  loop do
+    prompt('another_calculation?')
+    answer = Kernel.gets().chomp().downcase
+    break if valid_answer?(answer)
+    prompt('wrong_answer')
+  end
+  answer
+end
+
+def play_again?
+  answer = check_valid_answer
+  answer == 'y' || answer == 'yes'
 end
 
 clear
@@ -146,9 +165,11 @@ prompt('welcome')
 loop do
   loan_amount = get_loan_amount
   display_loan_amount(loan_amount)
-  apr = get_and_convert_apr
-  display_monthly_apr(apr)
+  apr = get_apr
+  display_apr(apr)
   loan_duration = get_loan_duration
+  monthly_payment = get_payment(loan_amount, apr, loan_duration)
+  display_payment(monthly_payment)
+  break unless play_again?
 end
-
-
+prompt('thank_you')
