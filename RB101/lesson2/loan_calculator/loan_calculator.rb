@@ -131,7 +131,7 @@ end
 
 def get_payment(loan_amount, apr, loan_duration)
   loan_amount * (get_monthly_apr(apr) / (1 -
-  (1 + get_monthly_apr(apr))**(-loan_duration))).round(4)
+  (1 + get_monthly_apr(apr))**(-loan_duration))).round(2)
 end
 
 def display_payment(monthly_payment)
