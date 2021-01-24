@@ -1,15 +1,24 @@
 VALID_CHOICES = %w(rock paper scissors lizard spock)
+WIN_MOVES = {
+  'rock' => %w(lizard scissors),
+  'lizard' => %w(spock paper),
+  'spock' => %w(rock scissors),
+  'scissors' => %w(paper lizard),
+  'paper' => %w(rock spock)
+}
 player_score = []
 computer_score = []
+
+def screen_clear
+  system 'clear'
+end
 
 def prompt(message)
   puts "=> #{message}"
 end
 
 def win?(first, second)
-  first == 'rock' && second == 'scissors' ||
-    first == 'paper' && second == 'rock' ||
-    first == 'scissors' && second == 'paper'
+  WIN_MOVES[first].include?(second)
 end
 
 def display_result(player, computer)
@@ -40,11 +49,11 @@ end
 
 def get_input
   prompt("Pick a choice:
-   r for rock
-   p for paper
-   sc for scissors
-   l for lizard
-   sp for spock")
+   r for Rock
+   p for Paper
+   sc for Scissors
+   l for Lizard
+   sp for Spock")
   player_choice = gets.chomp.downcase
   initials_to_choice(player_choice)
 end
@@ -82,15 +91,46 @@ def reset_scores!(player_score, computer_score)
   computer_score.clear
 end
 
+def display_scores(player_score, computer_score)
+  points_left = [player_score.length, computer_score.length].max
+  prompt("Player has #{player_score.length} wins,
+   Computer has #{computer_score.length} wins,
+   #{5 - points_left} wins left to endgame")
+end
+
 def grandwinner?(player_score, computer_score)
   if player_score.length == 5
-    prompt("player is grandwinner")
+    prompt("Player is grandwinner")
     reset_scores!(player_score, computer_score)
   elsif computer_score.length == 5
-    prompt("computer is winner")
+    prompt("Computer is winner")
     reset_scores!(player_score, computer_score)
   end
 end
+
+def valid_answer?(answer)
+  %w(y yes n no).include?(answer)
+end
+
+def get_answer
+  answer = ''
+  loop do
+    prompt("Do you want to play again?")
+    answer = gets.chomp.downcase
+    break if valid_answer?(answer)
+    prompt("Please choose Y, Yes, N or No as inputs")
+  end
+  answer
+end
+
+def play_again?
+  answer = get_answer
+  answer == 'y' || answer == 'yes'
+end
+
+screen_clear
+
+prompt("Welcome to Rock Paper Scissors Spock Lizard game!")
 
 loop do
   player_choice = select_choice
@@ -98,10 +138,10 @@ loop do
   display_choices(player_choice, computer_choice)
   display_result(player_choice, computer_choice)
   add_score!(player_choice, computer_choice, player_score, computer_score)
+  display_scores(player_score, computer_score)
   grandwinner?(player_score, computer_score)
-  prompt("Do you want to play again?")
-  answer = gets.chomp
-  break unless answer.downcase.start_with?('y')
+  break unless play_again?
+  screen_clear
 end
 
 prompt("Thanks for playing, Bye")
