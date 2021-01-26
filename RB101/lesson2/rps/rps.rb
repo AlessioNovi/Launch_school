@@ -1,13 +1,11 @@
-VALID_CHOICES = %w(rock paper scissors lizard spock)
-WIN_MOVES = {
-  'rock' => %w(lizard scissors),
-  'lizard' => %w(spock paper),
-  'spock' => %w(rock scissors),
-  'scissors' => %w(paper lizard),
-  'paper' => %w(rock spock)
+CHOICES = {
+  'r' => { name: 'rock', beats: %w(scissors lizard) },
+  'p' => { name: 'paper', beats: %w(rock spock) },
+  'sc' => { name: 'scissors', beats: %w(paper lizard) },
+  'l' => { name: 'lizard', beats: %w(spock paper) },
+  'sp' => { name: 'spock', beats: %w(scissors rock) }
 }
-player_score = []
-computer_score = []
+scores = { player_score: 0, computer_score: 0 }
 
 def screen_clear
   system 'clear'
@@ -18,7 +16,7 @@ def prompt(message)
 end
 
 def win?(first, second)
-  WIN_MOVES[first].include?(second)
+  CHOICES[first][:beats].include?(CHOICES[second][:name])
 end
 
 def display_result(player, computer)
@@ -31,80 +29,62 @@ def display_result(player, computer)
   end
 end
 
-def initials_to_choice(player_choice)
-  case player_choice
-  when 'r'
-    player_choice = 'rock'
-  when 'p'
-    player_choice = 'paper'
-  when 'sc'
-    player_choice = 'scissors'
-  when 'l'
-    player_choice = 'lizard'
-  when 'sp'
-    player_choice = 'spock'
+def choice_message
+  prompt("Pick a choice:")
+  CHOICES.each do |key, value|
+    puts "   #{key} for #{value[:name]}"
   end
-  player_choice
-end
-
-def get_input
-  prompt("Pick a choice:
-   r for Rock
-   p for Paper
-   sc for Scissors
-   l for Lizard
-   sp for Spock")
-  player_choice = gets.chomp.downcase
-  initials_to_choice(player_choice)
 end
 
 def select_choice
   player_choice = ''
   loop do
-    player_choice = get_input
-    break if VALID_CHOICES.include?(player_choice)
+    choice_message
+    player_choice = gets.chomp.downcase
+    break if CHOICES.keys.include?(player_choice)
     prompt("Not a valid choice")
   end
   player_choice
 end
 
 def random_choice
-  VALID_CHOICES.sample
+  CHOICES.keys.sample
 end
 
 def display_choices(player_choice, computer_choice)
-  prompt("You chose #{player_choice}; Computer chose #{computer_choice}")
+  prompt("You chose #{CHOICES[player_choice][:name]};
+   Computer chose #{CHOICES[computer_choice][:name]}")
 end
 
-def add_score!(player, computer, player_score, computer_score)
+def add_score!(player, computer, scores)
   if win?(player, computer)
-    player_score << "point"
+    scores[:player_score] += 1
   elsif win?(computer, player)
-    computer_score << "point"
+    scores[:computer_score] += 1
   else
     prompt("No points assigned")
   end
 end
 
-def reset_scores!(player_score, computer_score)
-  player_score.clear
-  computer_score.clear
+def reset_scores!(scores)
+  scores[:player_score] = 0
+  scores[:computer_score] = 0
 end
 
-def display_scores(player_score, computer_score)
-  points_left = [player_score.length, computer_score.length].max
-  prompt("Player has #{player_score.length} wins,
-   Computer has #{computer_score.length} wins,
+def display_scores(scores)
+  points_left = scores.values.max
+  prompt("Player has #{scores[:player_score]} wins,
+   Computer has #{scores[:computer_score]} wins,
    #{5 - points_left} wins left to endgame")
 end
 
-def grandwinner?(player_score, computer_score)
-  if player_score.length == 5
+def grandwinner?(scores)
+  if scores[:player_score] == 5
     prompt("Player is grandwinner")
-    reset_scores!(player_score, computer_score)
-  elsif computer_score.length == 5
+    reset_scores!(scores)
+  elsif scores[:computer_score] == 5
     prompt("Computer is winner")
-    reset_scores!(player_score, computer_score)
+    reset_scores!(scores)
   end
 end
 
@@ -115,7 +95,7 @@ end
 def get_answer
   answer = ''
   loop do
-    prompt("Do you want to play again?")
+    prompt("Do you want to play again? Please type Y, Yes, N or No")
     answer = gets.chomp.downcase
     break if valid_answer?(answer)
     prompt("Please choose Y, Yes, N or No as inputs")
@@ -133,13 +113,13 @@ screen_clear
 prompt("Welcome to Rock Paper Scissors Spock Lizard game!")
 
 loop do
+  display_scores(scores)
   player_choice = select_choice
   computer_choice = random_choice
   display_choices(player_choice, computer_choice)
   display_result(player_choice, computer_choice)
-  add_score!(player_choice, computer_choice, player_score, computer_score)
-  display_scores(player_score, computer_score)
-  grandwinner?(player_score, computer_score)
+  add_score!(player_choice, computer_choice, scores)
+  grandwinner?(scores)
   break unless play_again?
   screen_clear
 end
