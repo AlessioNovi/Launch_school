@@ -53,7 +53,7 @@ flintstones << "Dino"
 #We could have used either Array#concat or Array#push to add Dino to the family.
 #How can we add multiple items to our array? (Dino and Hoppy)
 
-flintstones.insert(-1,"Dino", "Happy") #bonus
+flintstones.insert(-1,"Dino", "Hoppy") #bonus
 flintstones.push("Dino").push("Hoppy") 
 flintstones.concat(%w(Dino Hoppy)) 
 
