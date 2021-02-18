@@ -7,6 +7,7 @@ array1.each { |value| value.upcase! if value.start_with?('C', 'S') }
 puts array2
 
 # Moe Larry CURLY SHEMP Harpo CHICO Groucho Zeppo
+
 #line 5 call each method on array1 which will iterate over the array and 
 #push each object into empty array2. Both arrays will reference to the same objects at this point.
 #line 6 will iterate again array1 and will mutate by upcasing the elements inside the array
