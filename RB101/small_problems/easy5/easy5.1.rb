@@ -12,3 +12,10 @@ ascii_value('') == 0
 def ascii_value(string)
   string.each_byte.to_a.sum
 end
+
+#solution
+def ascii_value(string)
+  sum = 0
+  string.each_char { |char| sum += char.ord }
+  sum
+end
