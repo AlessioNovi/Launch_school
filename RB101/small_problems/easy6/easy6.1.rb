@@ -1,17 +1,16 @@
-
 DEGREE = "\xC2\xB0"
 
 def dms(num)
- degree, degree_rem = num.divmod(1)
- minutes, minutes_rem = (degree_rem * 60).divmod(1)
- seconds = (minutes_rem * 60).to_i
- display_min = sprintf(%(%02d'), minutes)
- display_sec = sprintf(%(%02d"), seconds) 
- "#{degree}#{DEGREE}#{display_min}#{display_sec}"
+  degree, degree_rem = num.divmod(1)
+  minutes, minutes_rem = (degree_rem * 60).divmod(1)
+  seconds = (minutes_rem * 60).to_i
+  display_min = format(%(%02d'), minutes)
+  display_sec = format(%(%02d"), seconds)
+  "#{degree}#{DEGREE}#{display_min}#{display_sec}"
 end
 
+# solution
 
-#solution
 
 DEGREE = "\xC2\xB0"
 MINUTES_PER_DEGREE = 60
