@@ -12,11 +12,11 @@ def prompt(msg)
   puts "=> #{msg}"
 end
 
-# rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Layout/LineLength
 def display_board(brd, scores)
   system "clear"
   puts "     You're a #{PLAYER_MARKER} Computer is #{COMPUTER_MARKER}"
-  puts "  Player #{scores["Player"]} points Computer #{scores["Computer"]} points"
+  puts "  Player #{scores['Player']} points Computer #{scores['Computer']} points"
   puts ""
   puts "           |     |"
   puts "        #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}"
@@ -31,7 +31,7 @@ def display_board(brd, scores)
   puts "           |     |"
   puts ""
 end
-# rubocop:enable Metrics/AbcSize
+# rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Layout/LineLength
 
 def initialize_board
   new_board = {}
@@ -222,13 +222,12 @@ def exit_game?
 end
 
 def display_welcome_message
-prompt <<-TEXT
-Welcome to Tic Tac Toe game!
-   The player who succeeds in placing three of their marks in a diagonal, horizontal, or vertical row is the winner.
-   Reach 5 wins to be the grandwinner of the game!
-TEXT
+  prompt <<-TEXT
+  Welcome to Tic Tac Toe game!
+    The player who succeeds in placing three of their marks in a diagonal, horizontal, or vertical row is the winner.
+    Reach 5 wins to be the grandwinner of the game!
+  TEXT
 end
-
 
 display_welcome_message
 
