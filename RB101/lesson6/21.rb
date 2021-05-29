@@ -1,3 +1,35 @@
+# def display_set_game
+#   prompt <<-TEXT
+#   Please choose game version
+#   type:
+#   1 for 21 game
+#   2 for 31 game
+#   3 for 51 game
+# TEXT
+# end
+
+# def valid_answer?(answer)
+#   %w(1 2 3).include?(answer)
+# end
+
+# def return_game_version(answer)
+
+# def set_game_version
+#   display_set_game
+#   answer = ''
+#   loop do 
+#     answer = gets.chomp.strip
+#     break if valid_answer?(answer)
+#     prompt "Wrong input, please try again"
+#   end
+#   return_game_version(answer)
+# end
+
+
+
+
+
+
 def prompt(message)
   puts "=> #{message}"
 end
@@ -204,7 +236,6 @@ loop do
   initial_cards(player_hand, dealer_hand, deck)
   player_turn(player_hand, dealer_hand, deck)
   player_turn_result(player_hand, dealer_hand)
-  break if busted?(player_hand) && !play_again?
   if !player_hand.empty?
     dealer_turn(dealer_hand, deck)
     display_game_result(player_hand, dealer_hand)
